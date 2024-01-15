@@ -29,10 +29,10 @@ doc:
 	mkdocs serve
 
 build-doc:
-	mkdocs build
+	mkdocs build && docker-compose build documentation && make clean
 
 clean:
-	rm -rf .*_cache .*coverage
+	rm -rf .*_cache .*coverage site
 
 checklist: typehint lint pep8 black isort test clean
 
