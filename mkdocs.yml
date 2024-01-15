@@ -1,0 +1,13 @@
+site_name: Calculator App
+site_url: https://calculator.qwerty.com.ar
+
+nav:
+  - Home: index.md
+  - Calculator: calculator.md
+  - Tests: tests.md
+
+theme:
+  name: readthedocs
+
+plugins: 
+  - mkdocstrings
