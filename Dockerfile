@@ -1,12 +1,12 @@
 FROM python:3.11-slim-bookworm
 
 LABEL maintainer="Joaquin Gonzalez <joagonzalez@gmail.com>"
-LABEL application="Observability as a Service - Dashboards as a Service component"
-LABEL VERSION="1.0.0"
+LABEL application="Calculator seed project for python apps"
+LABEL VERSION="0.0.1"
 
 # setup environment variable  
 ENV APP_DIR=app 
-ENV APP_NAME=observability_workflows
+ENV APP_NAME=calculator
 ENV APP_PORT=8000 
 ENV APP_HOST=0.0.0.0
 
