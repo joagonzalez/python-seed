@@ -36,4 +36,6 @@ clean:
 
 checklist: typehint lint pep8 black isort test clean
 
+code-quality: typehint lint pep8 black isort clean
+
 .PHONY: checklist
