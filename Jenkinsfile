@@ -27,6 +27,7 @@ pipeline {
         stage('Code quality check: pep8, typing and sorting') {
                 steps {
                     script {
+                        echo 'Code quality check: pep8, typing and sorting'
                         sh 'make code-quality'
                     }
                 }
