@@ -17,7 +17,14 @@ isort:
 	isort src/ tests/ -v
 
 doc:
+	mkdocs serve
 
-checklist: typehint lint pep8 black isort test
+build-doc:
+	mkdocs build
+
+clean:
+	rm -rf .*_cache
+
+checklist: typehint lint pep8 black isort test clean
 
 .PHONY: checklist
