@@ -45,7 +45,7 @@ pipeline {
             }
             steps {
                 echo 'Building stage..'
-                // sh 'make test'
+                sh 'make build'
             }
         }
         stage('Deploy') {
