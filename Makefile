@@ -29,7 +29,7 @@ doc:
 	mkdocs serve
 
 build-doc:
-	mkdocs build && docker-compose build documentation && make clean
+	docker-compose build documentation && make clean
 
 clean:
 	rm -rf .*_cache .*coverage site
