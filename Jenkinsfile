@@ -1,12 +1,11 @@
 pipeline {
-    
     agent {
         docker { image 'python:3.11.4' }
     }
     
     environment {
             VERSION = '0.0.1'
-        }
+    }
 
 
     stages {
@@ -40,21 +39,32 @@ pipeline {
         }
         stage('Build') {
             when {
-                // Only execute build stage on develop branch
-                expression { env.GIT_BRANCH == 'origin/develop' }
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/rc-v.*/
+                }
             }
             steps {
-                echo 'Building stage..'
-                // sh 'make build'
+                echo 'Build only on release candidate branches..'
             }
         }
         stage('Deploy') {
             when {
-                // Only execute deploy stage on develop branch
-                expression { env.GIT_BRANCH == 'origin/develop' }
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/rc-v.*/
+                }
             }
             steps {
-                echo 'Deploying stage..'
+                echo 'Deploy only on release candidate branches..'
+            }
+        }
+        stage('Create release at Github') {
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/master.*/
+                }
+            }
+            steps {
+                echo 'Create a new release at Github'
             }
         }
     }
