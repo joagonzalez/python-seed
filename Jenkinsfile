@@ -42,13 +42,11 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                expression {
-                    // use !(expr) to negate something, || for or, && for and
-                    return branch_name =~ /^rc-v.*/
-
-                }
-            }
+            // when {
+            //     expression {
+            //         return branch_name =~ /^rc-v.*/
+            //     }
+            // }
             steps {
                 echo 'Build only on release candidate branches..'
             }
