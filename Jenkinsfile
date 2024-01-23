@@ -51,7 +51,7 @@ pipeline {
         stage('Deploy') {
             when {
                 // Only execute deploy stage on release candidate branch
-                expression { env.GIT_BRANCH ==~ /rc-v/} }
+                expression { env.GIT_BRANCH ==~ /rc-v/}
             }
             steps {
                 echo 'Deploying stage..'
