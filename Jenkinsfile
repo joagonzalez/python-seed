@@ -57,5 +57,15 @@ pipeline {
                 echo 'Deploy only on release candidate branches..'
             }
         }
+        stage('Create release at Github') {
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/master.*/
+                }
+            }
+            steps {
+                echo 'Create a new release at Github'
+            }
+        }
     }
 }
