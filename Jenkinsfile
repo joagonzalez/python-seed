@@ -1,12 +1,11 @@
 pipeline {
-    
     agent {
         docker { image 'python:3.11.4' }
     }
     
     environment {
             VERSION = '0.0.1'
-        }
+    }
 
 
     stages {
@@ -40,21 +39,12 @@ pipeline {
         }
         stage('Build') {
             when {
-                // Only execute build stage on release candidate branches
-                branch 'rc-v*'
+                expression {
+                    return env.GIT_BRANCH =~ /^rc-v.*/
+                }
             }
             steps {
-                echo 'Building stage and push docker image..'
-                // sh 'make build'
-            }
-        }
-        stage('Deploy') {
-            when {
-                // Only execute deploy stage on release candidate branch
-                branch 'rc-v*'
-            }
-            steps {
-                echo 'Deploying stage..'
+                echo 'Build only on release candidate branches..'
             }
         }
     }
