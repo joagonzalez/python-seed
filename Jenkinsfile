@@ -1,4 +1,4 @@
-def branch_name = "${BRANCH_NAME}"
+def branch_name = "${env.BRANCH_NAME}"
 
 pipeline {
     
