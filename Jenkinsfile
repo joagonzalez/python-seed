@@ -41,7 +41,7 @@ pipeline {
         stage('Build') {
             when {
                 // Only execute build stage on release candidate branches
-                branch 'rc-v*'
+                expression { env.BRANCH_NAME =~ '.*rc-v.*').matches() }
             }
             steps {
                 echo 'Building stage and push docker image..'
@@ -49,12 +49,10 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when {
-                // Only execute deploy stage on release candidate branch
-                branch 'rc-v*'
-            }
-            steps {
-                echo 'Deploying stage..'
+            if ((env.BRANCH_NAME =~ '.*rc-v.*').matches()) {
+                stage("Deploy"){
+                    echo 'Execute deploy if in release candidate branch'
+                }
             }
         }
     }
