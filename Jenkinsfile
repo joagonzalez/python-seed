@@ -38,6 +38,11 @@ pipeline {
             }
         }
         stage('Build') {
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^rc-v.*/
+                }
+            }
             steps {
                 echo 'Build only on release candidate branches..'
             }
