@@ -1,5 +1,3 @@
-def branch_name = "${env.GIT_BRANCH}"
-
 pipeline {
     
     agent {
@@ -38,15 +36,15 @@ pipeline {
             steps {
                 echo 'Testing stage..'
                 sh 'make test'
-                echo "branch name is: " + ${branch_name}
+                echo "branch name is: " + ${env.GIT_BRANCH}
             }
         }
         stage('Build') {
-            // when {
-            //     expression {
-            //         return branch_name =~ /^rc-v.*/
-            //     }
-            // }
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^rc-v.*/
+                }
+            }
             steps {
                 echo 'Build only on release candidate branches..'
             }
