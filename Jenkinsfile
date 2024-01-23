@@ -41,7 +41,7 @@ pipeline {
         stage('Build') {
             when {
                 // Only execute build stage on release candidate branches
-                expression { env.GIT_BRANCH ==~ /rc-v/}
+                branch 'rc-v*'
             }
             steps {
                 echo 'Building stage and push docker image..'
@@ -51,7 +51,7 @@ pipeline {
         stage('Deploy') {
             when {
                 // Only execute deploy stage on release candidate branch
-                expression { env.GIT_BRANCH ==~ /rc-v/}
+                branch 'rc-v*'
             }
             steps {
                 echo 'Deploying stage..'
