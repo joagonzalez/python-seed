@@ -39,18 +39,25 @@ pipeline {
             }
         }
         stage('Build') {
-            if ((env.BRANCH_NAME =~ '.*rc-v.*').matches()) {
-                steps {
-                    echo 'Building stage and push docker image..'
-                    // sh 'make build'
+            when {
+                expression {
+                    env.BRANCH_NAME.startsWith('rc-v')
                 }
             }
+            steps {
+                echo 'Building stage and push docker image..'
+                // sh 'make build'
+            }
+            
         }
         stage('Deploy') {
-            if ((env.BRANCH_NAME =~ '.*rc-v.*').matches()) {
-                stage("Deploy"){
-                    echo 'Execute deploy if in release candidate branch'
+            when {
+                expression {
+                    env.BRANCH_NAME.startsWith('rc-v')
                 }
+            }
+            stage("Deploy"){
+                echo 'Execute deploy if in release candidate branch'
             }
         }
     }
