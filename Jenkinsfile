@@ -39,13 +39,11 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                // Only execute build stage on release candidate branches
-                expression { env.BRANCH_NAME =~ '.*rc-v.*').matches() }
-            }
-            steps {
-                echo 'Building stage and push docker image..'
-                // sh 'make build'
+            if ((env.BRANCH_NAME =~ '.*rc-v.*').matches()) {
+                steps {
+                    echo 'Building stage and push docker image..'
+                    // sh 'make build'
+                }
             }
         }
         stage('Deploy') {
