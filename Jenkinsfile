@@ -1,5 +1,4 @@
 pipeline {
-    
     agent {
         docker { image 'python:3.11.4' }
     }
@@ -36,7 +35,6 @@ pipeline {
             steps {
                 echo 'Testing stage..'
                 sh 'make test'
-                echo "branch name is: " + ${env.GIT_BRANCH}
             }
         }
         stage('Build') {
