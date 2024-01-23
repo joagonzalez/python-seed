@@ -47,5 +47,15 @@ pipeline {
                 echo 'Build only on release candidate branches..'
             }
         }
+        stage('Deploy') {
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/rc-v.*/
+                }
+            }
+            steps {
+                echo 'Deploy only on release candidate branches..'
+            }
+        }
     }
 }
