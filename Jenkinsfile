@@ -40,8 +40,8 @@ pipeline {
         }
         stage('Build') {
             when {
-                // Only execute build stage on develop branch
-                expression { env.GIT_BRANCH == 'origin/develop' }
+                // Only execute build stage on release candidate branches
+                expression { env.GIT_BRANCH ==~ /rc-v/}
             }
             steps {
                 echo 'Building stage..'
@@ -50,8 +50,8 @@ pipeline {
         }
         stage('Deploy') {
             when {
-                // Only execute deploy stage on develop branch
-                expression { env.GIT_BRANCH == 'origin/develop' }
+                // Only execute deploy stage on release candidate branch
+                expression { env.GIT_BRANCH ==~ /rc-v/}
             }
             steps {
                 echo 'Deploying stage..'
