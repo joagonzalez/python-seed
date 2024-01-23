@@ -38,7 +38,7 @@ pipeline {
             steps {
                 echo 'Testing stage..'
                 sh 'make test'
-                echo "branch name is: " + ${env.BRANCH_NAME}
+                echo "branch name is: " + ${branch_name}
             }
         }
         stage('Build') {
