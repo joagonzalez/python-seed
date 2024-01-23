@@ -8,6 +8,7 @@ pipeline {
             VERSION = '0.0.1'
     }
 
+    def branch_name = "${BRANCH_NAME}"
 
     stages {
         stage('Prepare image pre reqs') {
@@ -36,11 +37,19 @@ pipeline {
             steps {
                 echo 'Testing stage..'
                 sh 'make test'
+                echo "branch name is: " + ${env.BRANCH_NAME}
             }
         }
-        if ((env.BRANCH_NAME =~ '.*rc-v.*').matches()) {
-            stage("Build"){
-                echo 'Build release...'
+        stage('Build') {
+            when {
+                expression {
+                    // use !(expr) to negate something, || for or, && for and
+                    return branch_name =~ /^rc-v.*/
+
+                }
+            }
+            steps {
+                echo 'Build only on release candidate branches..'
             }
         }
     }
