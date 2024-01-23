@@ -1,3 +1,5 @@
+def branch_name = "${BRANCH_NAME}"
+
 pipeline {
     
     agent {
@@ -8,7 +10,6 @@ pipeline {
             VERSION = '0.0.1'
     }
 
-    def branch_name = "${BRANCH_NAME}"
 
     stages {
         stage('Prepare image pre reqs') {
