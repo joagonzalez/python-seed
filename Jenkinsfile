@@ -44,7 +44,7 @@ pipeline {
                 expression { env.GIT_BRANCH ==~ /rc-v/}
             }
             steps {
-                echo 'Building stage..'
+                echo 'Building stage and push docker image..'
                 // sh 'make build'
             }
         }
