@@ -4,10 +4,18 @@ from typing import Any, Dict
 from dotenv import load_dotenv
 
 dotenv_path = os.getenv(
-    "API_DOTENV", os.path.join(os.path.dirname(__file__), ".env")
+    "API_DOTENV_SHARED", os.path.join(os.path.dirname(__file__), ".env.shared")
+)
+
+dotenv_path_secrets = os.getenv(
+    "API_DOTENV_SECRETS",
+    os.path.join(os.path.dirname(__file__), ".env.secrets"),
 )
 
 load_dotenv(dotenv_path, override=True)  # priorizes env vars (not .env file)
+load_dotenv(
+    dotenv_path_secrets, override=True
+)  # priorizes env vars (not .env file)
 
 config: Dict[str, Any] = {
     "SERVER": {
@@ -56,12 +64,13 @@ config: Dict[str, Any] = {
     },
 }
 
+# fmt: off
 PROMPT = """
      ___      .______    __          _______. _______  _______  _______  
-    /   \     |   _  \  |  |        /       ||   ____||   ____||       \
-   /  ^  \    |  |_)  | |  |       |   (----`|  |__   |  |__   |  .--.  |
+    /   \     |   _  \  |  |        /       ||   ____||   ____||       \  
+   /  ^  \    |  |_)  | |  |       |   (----`|  |__   |  |__   |  .--.  | 
   /  /_\  \   |   ___/  |  |        \   \    |   __|  |   __|  |  |  |  |
  /  _____  \  |  |      |  |    .----)   |   |  |____ |  |____ |  '--'  |
-/__/     \__\ | _|      |__|    |_______/    |_______||_______||_______/
-
-"""  # noqa: W605, E261, W291
+/__/     \__\ | _|      |__|    |_______/    |_______||_______||_______/ 
+""" # noqa: W605, E261, W291
+# fmt: on
