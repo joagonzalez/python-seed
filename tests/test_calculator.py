@@ -1,7 +1,7 @@
 """
 Tests for math functions.
 """
-from src.app import Calculator
+from src.services.calculator import Calculator
 
 
 def test_suma_1():

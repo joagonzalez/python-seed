@@ -1,7 +1,15 @@
-from time import sleep
-from src.app import Calculator
+import uvicorn
 
+from src.config.settings import config
 
-if __name__  == "__main__":
-    print(f"2+2 = {Calculator.suma(2,2)}")
-    sleep(100)
+# TODO jwt, sqlalchemy, usersClass, 
+
+if __name__ == '__main__':
+    uvicorn.run(    
+        "src:app",
+        host=config['SERVER']['HOSTNAME'],
+        port=config['SERVER']['PORT'],
+        log_level=config['SERVER']['LOG_LEVEL'],
+        reload=config['SERVER']['RELOAD'],
+        workers=config['SERVER']['WORKERS']
+    )
