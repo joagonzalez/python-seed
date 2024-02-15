@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'python:3.11.4' }
+        docker { image 'joagonzalez/jenkins_builder:python-3.11.4' }
     }
     
     environment {

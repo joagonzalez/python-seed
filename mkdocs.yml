@@ -3,11 +3,19 @@ site_url: https://calculator.qwerty.com.ar
 
 nav:
   - Home: index.md
-  - Calculator: calculator.md
+  - Calculator: 
+    - Application: calculator.md
+    - Endpoints: endpoints.md
+    - Services: services.md
   - Tests: tests.md
 
 theme:
   name: readthedocs
 
-plugins: 
-  - mkdocstrings
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_submodules: true
