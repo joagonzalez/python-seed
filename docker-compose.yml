@@ -12,6 +12,7 @@ services:
       - VIRTUAL_HOST=doc.calculator.qwerty.com.ar
       - LETSENCRYPT_HOST=doc.calculator.qwerty.com.ar
       - LETSENCRYPT_EMAIL=joagonzalez@gmail.com
+      - VIRTUAL_PORT=8000
 
 networks:
   dmz_ssl:
