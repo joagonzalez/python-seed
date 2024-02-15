@@ -34,6 +34,9 @@ build-doc:
 build-jenkins-builder:
 	docker build -t joagonzalez/jenkins_builder:python-3.11.4 build/jenkins_builder/ && docker push joagonzalez/jenkins_builder:python-3.11.4
 
+deploy:
+	docker stack deploy -c docker-compose.yml calculator
+
 clean:
 	rm -rf .*_cache .*coverage site
 
