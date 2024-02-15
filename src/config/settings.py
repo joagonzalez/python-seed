@@ -1,3 +1,9 @@
+"""
+In this module all configuration required for the application
+is collected within a single dictionary named 'config'. In the future
+it will be used to config loggers as well
+"""
+
 import os
 from typing import Any, Dict
 
@@ -20,7 +26,7 @@ load_dotenv(
 config: Dict[str, Any] = {
     "SERVER": {
         "HOSTNAME": os.getenv("SERVER_HOSTNAME", "0.0.0.0"),
-        "PORT": int(os.getenv("SERVER_PORT", 5000)),
+        "PORT": int(os.getenv("SERVER_PORT", "5000")),
         "DEBUG": os.getenv("SERVER_DEBUG", "True").lower()
         in ("true", "1", "t"),
         "RELOAD": os.getenv("SERVER_RELOAD", "False").lower()
@@ -29,7 +35,7 @@ config: Dict[str, Any] = {
             os.getenv("SERVER_RELOAD_DIRS", "src"),
         ],
         "LOG_LEVEL": os.getenv("SERVER_LOG_LEVEL", "debug"),
-        "WORKERS": int(os.getenv("SERVER_WORKERS", 5)),
+        "WORKERS": int(os.getenv("SERVER_WORKERS", "5")),
     },
     "API": {
         "ENVIRONMENT": os.getenv("API_ENVIRONMENT", "local"),
@@ -50,15 +56,18 @@ config: Dict[str, Any] = {
         "SECRET_KEY": os.getenv("JWT_SECRET_KEY", ""),
         "ALGORITHM": os.getenv("JWT_ALGORITHM", ""),
         "ACCESS_TOKEN_EXPIRE_MINUTES": int(
-            os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 30)
+            os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "30")
         ),
     },
     "DATABASE": {
         "SQLALCHEMY": {
             "PREFIX": os.getenv("SQLALCHEMY_DATABASE_PREFIX", "DB."),
             "CONFIG": {
-                "DB.URL": os.getenv("SQLALCHEMY_DATABASE_URL", ""),
-                "DB.ECHO": bool(os.getenv("SQLALCHEMY_DATABASE_ECHO", True)),
+                "DB.URL": os.getenv("SQLALCHEMY_DATABASE_URL", None),
+                "DB.ECHO": os.getenv(
+                    "SQLALCHEMY_DATABASE_ECHO", "True"
+                ).lower()
+                in ("true", "1", "t"),
             },
         },
     },
@@ -67,10 +76,10 @@ config: Dict[str, Any] = {
 # fmt: off
 PROMPT = """
      ___      .______    __          _______. _______  _______  _______  
-    /   \     |   _  \  |  |        /       ||   ____||   ____||       \  
-   /  ^  \    |  |_)  | |  |       |   (----`|  |__   |  |__   |  .--.  | 
-  /  /_\  \   |   ___/  |  |        \   \    |   __|  |   __|  |  |  |  |
- /  _____  \  |  |      |  |    .----)   |   |  |____ |  |____ |  '--'  |
-/__/     \__\ | _|      |__|    |_______/    |_______||_______||_______/ 
-""" # noqa: W605, E261, W291
+    /   \\     |   _  \\  |  |        /       ||   ____||   ____||       \\  
+   /  ^  \\    |  |_)  | |  |       |   (----`|  |__   |  |__   |  .--.  | 
+  /  /_\\  \\   |   ___/  |  |        \\   \\    |   __|  |   __|  |  |  |  |
+ /  _____  \\  |  |      |  |    .----)   |   |  |____ |  |____ |  '--'  |
+/__/     \\__\\ | _|      |__|    |_______/    |_______||_______||_______/ 
+""" # noqa: W605, E261, W291, W1401
 # fmt: on
