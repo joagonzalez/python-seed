@@ -31,6 +31,9 @@ doc:
 build-doc:
 	docker-compose build documentation && make clean
 
+build-jenkins-builder:
+	docker build -t joagonzalez/jenkins_builder:python-3.11.4 build/jenkins_builder/ && docker push joagonzalez/jenkins_builder:python-3.11.4
+
 clean:
 	rm -rf .*_cache .*coverage site
 
