@@ -55,6 +55,7 @@ pipeline {
             }
             steps {
                 echo 'Deploy only on release candidate branches..'
+                sh 'make deploy'
             }
         }
         stage('Create release at Github') {
