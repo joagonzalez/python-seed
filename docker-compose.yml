@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: ./build/documentation/Dockerfile
-    image: $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER
+    image: ${REGISTRY_IMAGE}:${GIT_COMMIT_SHORT}-jenkins-${CURRENT_BUILD_NUMBER}
     networks:
       - dmz_ssl
     environment:
