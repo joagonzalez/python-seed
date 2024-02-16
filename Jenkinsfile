@@ -17,13 +17,12 @@ pipeline {
             TEXT_BREAK = "--------------------------------------------------------------"
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
 
-            // REGISTRY = 'dockerhub.com'
-            // REGISTRY_IMAGE = "$REGISTRY/joagonzalez/"
-            // REGISTRY_USER = credentials('registryUser')
-            // REGISTRY_PASSWORD = credentials('registryPassword')
-            // GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-
-            VERSION = '0.0.1'
+            // Docker registry config
+            REGISTRY = 'joagonzalez'
+            REGISTRY_IMAGE = "$REGISTRY/python-seed-doc"
+            DOCKERFILE_PATH = "build/documentation/Dockerfile"
+            REGISTRY_USER = credentials('registryUser')
+            REGISTRY_PASSWORD = credentials('registryPassword')
 
             // Telegram Message Success and Failure
             TEXT_SUCCESS_BUILD = "${JOB_NAME} is Success"
@@ -68,6 +67,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
+                sh 'docker build -t $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH .'
             }
         }
         stage('Push') {
@@ -78,8 +78,8 @@ pipeline {
             }
             steps {
                 echo 'Push new image to docker hub registry..'
-            //     sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY'
-            //     sh 'docker push $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY'
+                sh 'docker push $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
             }
         }
         stage('Deploy') {
