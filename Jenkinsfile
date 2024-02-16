@@ -24,7 +24,6 @@ pipeline {
             // GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
 
             VERSION = '0.0.1'
-            CURRENT_BUILD_NUMBER = "${currentBuild.number}"
 
             // Telegram Message Success and Failure
             TEXT_SUCCESS_BUILD = "${JOB_NAME} is Success"
