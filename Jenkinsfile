@@ -78,7 +78,7 @@ pipeline {
             }
             steps {
                 echo 'Push new image to docker hub registry..'
-                sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY'
+                sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
                 sh 'docker push $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
             }
         }
