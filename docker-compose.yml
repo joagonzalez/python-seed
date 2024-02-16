@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: ./build/documentation/Dockerfile
-    image: joagonzalez/calculator-doc:0.0.1
+    image: $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER
     networks:
       - dmz_ssl
     environment:
