@@ -34,6 +34,12 @@ build-doc:
 build-jenkins-builder:
 	docker build -t joagonzalez/jenkins_builder:python-3.11.4 build/jenkins_builder/ && docker push joagonzalez/jenkins_builder:python-3.11.4
 
+deploy-local:
+	export GIT_COMMIT_SHORT=0.0.1 && \
+	export CURRENT_BUILD_NUMBER=666 && \
+	export REGISTRY_IMAGE=joagonzalez/python-seed-doc && \
+	docker stack deploy -c docker-compose.yml calculator
+
 deploy:
 	docker stack deploy -c docker-compose.yml calculator
 
