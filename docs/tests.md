@@ -1,3 +1,3 @@
 ## Tests
 
-::: tests.test_math
+::: tests.test_calculator
