@@ -126,7 +126,7 @@ pipeline {
                             "draft": false,
                             "prerelease": false
                         }'
-                        curl --data "$DATA" "https://api.github.com/repos/$REPOSITORY/releases?access_token=$GITHUB_TOKEN"
+                        curl -H "Authorization: token $GITHUB_TOKEN" --data "$DATA" "https://api.github.com/repos/$REPOSITORY/releases"
                     fi
                 '''
             }
