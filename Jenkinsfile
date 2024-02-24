@@ -23,8 +23,10 @@ pipeline {
 
             // Docker registry config
             REGISTRY = 'joagonzalez'
-            REGISTRY_IMAGE = "$REGISTRY/python-seed-doc"
-            DOCKERFILE_PATH = "build/documentation/Dockerfile"
+            REGISTRY_IMAGE_DOC = "$REGISTRY/python-seed-doc"
+            DOCKERFILE_PATH_DOC = "build/documentation/Dockerfile"
+            REGISTRY_IMAGE_API = "$REGISTRY/python-seed-api"
+            DOCKERFILE_PATH_API = "build/calculator/Dockerfile"
             REGISTRY_USER = credentials('registryUser')
             REGISTRY_PASSWORD = credentials('registryPassword')
 
@@ -71,7 +73,8 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh 'docker build -t $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH .'
+                sh 'docker build -t $REGISTRY_IMAGE_DOC:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_DOC .'
+                sh 'docker build -t $REGISTRY_IMAGE_DOC:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
             }
         }
         stage('Push') {
@@ -83,7 +86,8 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh 'docker push $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh 'docker push $REGISTRY_IMAGE_DOC:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh 'docker push $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
             }
         }
         stage('Deploy') {
