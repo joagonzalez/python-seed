@@ -64,7 +64,7 @@ class Calculator:
         return a * b
 
     @staticmethod
-    def division(a: float = 1, b: float = 1) -> float:
+    def division(a: float = 1, b: float = 1) -> float | ZeroDivisionError:
         """Function that returns division of two values where
            b is non zero
 
@@ -77,6 +77,6 @@ class Calculator:
         """
         try:
             return a / b
-        except ZeroDivisionError:
-            print("Division by 0 not allowed!")
-            return 0
+        except ZeroDivisionError as error:
+            msg = "Division by 0 not allowed!"
+            raise ZeroDivisionError(msg) from error

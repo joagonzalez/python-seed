@@ -1,6 +1,8 @@
 """
 Tests for math functions.
 """
+import pytest
+
 from src.services.calculator import Calculator
 
 
@@ -92,7 +94,9 @@ def test_division_1():
     """
     Test 1 division()
     """
-    assert Calculator.division(1, 0) == 0
+    with pytest.raises(ZeroDivisionError) as excinfo:
+        Calculator.division(1, 0)
+    assert str(excinfo.value) == "Division by 0 not allowed!"
 
 
 def test_division_2():

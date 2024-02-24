@@ -4,6 +4,7 @@ Main Application class that extends FastAPI behavior.
 
 from fastapi import FastAPI
 
+from src.api.calculator import router as calculator
 from src.api.health import router as health
 from src.config.settings import PROMPT, config
 
@@ -39,6 +40,7 @@ class Application(FastAPI):
         """REGISTER API ROUTERS"""
         # self.include_router(authentication)
         # self.include_router(users, prefix='/users')
+        self.include_router(calculator, prefix="/calculator")
         self.include_router(health, prefix="/health")
 
     # def configureDB(self):
