@@ -74,7 +74,7 @@ pipeline {
             steps {
                 echo 'Build only on release candidate branches..'
                 sh 'docker build -t $REGISTRY_IMAGE_DOC:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_DOC .'
-                sh 'docker build -t $REGISTRY_IMAGE_DOC:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
+                sh 'docker build -t $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
             }
         }
         stage('Push') {
