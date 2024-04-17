@@ -6,14 +6,48 @@ from typing import Dict
 
 from fastapi import APIRouter
 
+from src.services.calculator import Calculator
+
 router = APIRouter()
 
 
-@router.get("/status/", tags=["Health"])
-async def get_health() -> Dict[str, str]:
-    """Returns a dictionary with internal app status
+@router.get("/addition/", tags=["Calculator"])
+async def addition(a: float, b: float) -> Dict[str, float]:
+    """Performs the addition of two float values
 
     Returns:
-        Dict[str, str]: single key dict with status message
+        Dict[str, float]: single key dict with result of the operation
     """
-    return {"status": "OK"}
+    return {"result": Calculator.suma(a, b)}
+
+
+@router.get("/substract/", tags=["Calculator"])
+async def substraction(a: float, b: float) -> Dict[str, float]:
+    """Performs the substraction of two float values
+
+    Returns:
+        Dict[str, float]: single key dict with result of the operation
+    """
+    return {"result": Calculator.resta(a, b)}
+
+
+@router.get("/multiply/", tags=["Calculator"])
+async def multiply(a: float, b: float) -> Dict[str, float]:
+    """Performs the multiplication of two float values
+
+    Returns:
+        Dict[str, float]: single key dict with result of the operation
+    """
+    return {"result": Calculator.multiplicacion(a, b)}
+
+
+@router.get("/divide/", tags=["Calculator"], response_model=None)
+async def divide(a: float, b: float) -> Dict[str, float | ZeroDivisionError]:
+    """Performs the division of two float values.
+    Response model is None due to conditional float | ZeroDivisionError
+    is not supported by pydantic.
+
+    Returns:
+        Dict[str, float]: single key dict with result of the operation
+    """
+    return {"result": Calculator.division(a, b)}

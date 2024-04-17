@@ -2,8 +2,8 @@ site_name: Calculator App
 site_url: https://calculator.qwerty.com.ar
 
 nav:
-  - Home: index.md
   - Calculator: 
+    - Overview: index.md
     - Application: calculator.md
     - Endpoints: endpoints.md
     - Services: services.md
