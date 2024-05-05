@@ -10,6 +10,9 @@ install:
 typehint:
 	mypy src/ tests/
 
+test-local:
+	pytest tests/ -v --cov
+
 test:
 	pytest tests/ -v --cov --cov-report=xml:coverage.xml
 
