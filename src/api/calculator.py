@@ -3,7 +3,9 @@ This module expose endpoints with main app features
 """
 
 from typing import Dict
+
 from fastapi import APIRouter, status
+
 from src.services.calculator import Calculator
 
 router = APIRouter()
@@ -39,7 +41,12 @@ async def multiply(a: float, b: float) -> Dict[str, float]:
     return {"result": Calculator.multiplicacion(a, b)}
 
 
-@router.get("/divide/", tags=["Calculator"], response_model=None, status_code=status.HTTP_200_OK)
+@router.get(
+    "/divide/",
+    tags=["Calculator"],
+    response_model=None,
+    status_code=status.HTTP_200_OK,
+)
 async def divide(a: float, b: float) -> Dict[str, float | ZeroDivisionError]:
     """Performs the division of two float values.
     Response model is None due to conditional float | ZeroDivisionError

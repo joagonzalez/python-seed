@@ -3,8 +3,8 @@ API Health endpoints used to monitor the application
 from external tools and applications
 """
 from typing import Dict
-from fastapi import APIRouter, status
 
+from fastapi import APIRouter, status
 
 router = APIRouter()
 
