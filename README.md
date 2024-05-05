@@ -1,7 +1,7 @@
 # python-seed-project
 ![Python](https://img.shields.io/badge/python-v3.12.x-orange)
 ![Python](https://img.shields.io/badge/platform-linux-blue)
-
+[![Coverage Status](https://coveralls.io/repos/github/joagonzalez/python-seed/badge.svg?branch=feature-49-coverage-badge)](https://coveralls.io/github/joagonzalez/python-seed?branch=feature-49-coverage-badge)
 ---
 **Content**
 - [Getting started](#getting-started)
