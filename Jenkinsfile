@@ -71,7 +71,7 @@ pipeline {
         stage('Publish coverage') {
             when {
                 expression {
-                    return env.GIT_BRANCH =~ /^origin\/rc-v.*/
+                    return env.GIT_BRANCH =~ /^origin\/master.*/
                 }
             }
             steps {
