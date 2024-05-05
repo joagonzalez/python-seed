@@ -1,19 +1,6 @@
 version: "3"
 services: 
 
-  documentation:
-    build: 
-      context: .
-      dockerfile: ./build/documentation/Dockerfile
-    image: ${REGISTRY_IMAGE_DOC}:${GIT_COMMIT_SHORT}-jenkins-${CURRENT_BUILD_NUMBER}
-    networks:
-      - dmz_ssl
-    environment:
-      - VIRTUAL_HOST=doc.calculator.qwerty.com.ar
-      - LETSENCRYPT_HOST=doc.calculator.qwerty.com.ar
-      - LETSENCRYPT_EMAIL=joagonzalez@gmail.com
-      - VIRTUAL_PORT=8000
-
   api:
     build: 
       context: .
