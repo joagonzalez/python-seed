@@ -33,6 +33,9 @@ pipeline {
             // Telegram Message Success and Failure
             TEXT_SUCCESS_BUILD = "${JOB_NAME} is Success"
             TEXT_FAILURE_BUILD = "${JOB_NAME} is Failure"
+
+            // Coveralls
+            COVERALL_TOKEN = credentials('coverallToken')
     }
 
     stages {
@@ -63,6 +66,18 @@ pipeline {
             steps {
                 echo 'Testing stage..'
                 sh 'make test'
+            }
+        }
+        stage('Publish coverage') {
+            when {
+                expression {
+                    return env.GIT_BRANCH =~ /^origin\/master.*/
+                }
+            }
+            steps {
+                echo 'Publish coverage and tests to coveralls..'
+                sh 'COVERALLS_REPO_TOKEN=$COVERALL_TOKEN coveralls --srcdir=report/'
+                sh 'make clean'
             }
         }
         stage('Build') {

@@ -11,7 +11,7 @@ typehint:
 	mypy src/ tests/
 
 test:
-	pytest tests/ -v --cov
+	pytest tests/ -v --cov --cov-report=xml:report/coverage.xml
 
 pep8:
 	flake8 src/ tests/
@@ -44,7 +44,7 @@ deploy:
 	docker stack deploy -c docker-compose.yml calculator
 
 clean:
-	rm -rf .*_cache .*coverage site
+	rm -rf .*_cache .*coverage site report
 
 checklist: typehint lint pep8 black isort test clean
 
