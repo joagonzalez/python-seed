@@ -76,7 +76,7 @@ pipeline {
             }
             steps {
                 echo 'Publish coverage and tests to coveralls..'
-                sh 'COVERALLS_REPO_TOKEN=$COVERALL_TOKEN coveralls --srcdir=report/'
+                sh 'COVERALLS_REPO_TOKEN=$COVERALL_TOKEN coveralls'
                 sh 'make clean'
             }
         }
