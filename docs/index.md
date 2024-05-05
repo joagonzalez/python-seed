@@ -1,6 +1,6 @@
 # Overview
 
-This project tries to implement an end to end python repository following [12 facto app methodology](https://12factor.net/) that includes CI/CD pipeline using Jenkins, code quality tools integration like pylint, mypy, flake8, isort, black and mkdocs for documentation using docstrings and typing within project source code.
+This project tries to implement an end to end python repository following [12 factor app methodology](https://12factor.net/) that includes CI/CD pipeline using Jenkins, code quality tools integration like pylint, mypy, flake8, isort, black and mkdocs for documentation using docstrings and typing within project source code.
 
 Also, the template project is a REST API using FastAPI framework with SQLModel for DB manipulation and versioning and Celery for asynchronous tasks support.
 
