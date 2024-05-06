@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/platform-linux-blue)
 [![Build Status](https://jenkins.qwerty.com.ar/buildStatus/icon?job=python-seed)](https://jenkins.qwerty.com.ar/job/python-seed/)
 [![Documentation](https://readthedocs.org/projects/python-seed/badge/?)](https://python-seed.readthedocs.io/en/latest/)
-[![Coverage Status](https://coveralls.io/repos/github/joagonzalez/python-seed/badge.svg?branch=origin/master)](https://coveralls.io/github/joagonzalez/python-seed?branch=origin/master)
+[![Coverage Status](https://coveralls.io/repos/github/joagonzalez/python-seed/badge.svg?branch=origin/master&kill_cache=1)](https://coveralls.io/github/joagonzalez/python-seed?branch=origin/master)
 ---
 **Content**
 - [Getting started](#getting-started)
