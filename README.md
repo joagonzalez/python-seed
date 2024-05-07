@@ -21,15 +21,13 @@
 
 This project tries to implement an end to end python repository that includes CI/CD pipeline using Jenkins, code quality tools integration like pylint, mypy, flake8, isort, black and mkdocs for documentation using docstrings and typing within project source code.
 
-Also, the template project is a REST API using FastAPI framework with SQLModel for DB manipulation and versioning and Celery for asynchronous tasks support.
+Also, the template project is a REST API using FastAPI that expose basic calculator functions.
 
-- Users CRUD and Calculator API: FastAPI + SQLModel
-- Async tasks: Celery with Redis as message broker
-- Documentation: mkdocs with docstrings and typing
+- Documentation: mkdocs with docstrings and typing at readthedocs service
 - CI CD: Jenskins pipeline using telegram integration and custom branch strategy described below
 - Deployment: Docker and Docker Swarm
 - Code Quality: isort, black, mypy, pylint, flake8
-- Testing: pytestChecking out Revision 3ca6ec9766b74cb0d3d7e02b866ee007b4cd22b9 (origin/feature-8-readme)
+- Testing: pytest
 
 ## Branch strategy
 The following diagram describes the branch strategy used in the context of this template repository. The ideas was to simplify git flow due to it is oriented to single developer or very small teams with only one production stage.
