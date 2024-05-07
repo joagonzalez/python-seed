@@ -13,3 +13,9 @@ Please check how to use this repository in the repo [README](https://github.com/
 Please check open issues at [github](https://github.com/joagonzalez/python-seed/issues)
 
 ## Changelog
+
+[v0.0.3]
+- Documentation migrated to readthedocs service
+- Dynamic badges for coverage (coveralls), documentation as stated before, build status (jenkins plugin)
+- API basic tests added
+- SQLModel and alembic remove as not needed in a template repo
