@@ -12,3 +12,7 @@ python:
 
 mkdocs:
   configuration: mkdocs.yml
+
+theme:
+  features:
+    - content.action.edit
