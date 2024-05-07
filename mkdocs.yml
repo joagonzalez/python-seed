@@ -1,5 +1,7 @@
 site_name: Calculator App
 site_url: https://calculator.qwerty.com.ar
+repo_url: https://github.com/joagonzalez/python-seed/
+edit_uri: edit/master/docs/
 
 nav:
   - Calculator: 
@@ -13,7 +15,8 @@ theme:
   name: readthedocs
   features:
     - content.action.edit
-
+    - content.action.view
+    
 plugins:
 - search
 - mkdocstrings:
@@ -21,3 +24,6 @@ plugins:
       python:
         options:
           show_submodules: true
+
+extra_css:
+  - css/extra.css
