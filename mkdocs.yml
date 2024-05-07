@@ -11,6 +11,8 @@ nav:
 
 theme:
   name: readthedocs
+  features:
+    - content.action.edit
 
 plugins:
 - search
