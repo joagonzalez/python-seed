@@ -5,6 +5,10 @@ in terms of linting, testing and documentation automation
 """
 
 from typing import Any
+from src.exceptions import AdditionError, \
+                            SubstractionError, \
+                            MultiplicationError, \
+                            DivisionError
 
 
 class Calculator:
@@ -35,6 +39,9 @@ class Calculator:
         Returns:
             float: addition of a and b
         """
+        if isinstance(a, str) or isinstance(b, str):
+            raise AdditionError("Invalid input. Only numbers are allowed")
+        
         return a + b
 
     @staticmethod
@@ -48,6 +55,9 @@ class Calculator:
         Returns:
             float: difference of a and b
         """
+        if isinstance(a, str) or isinstance(b, str):
+            raise SubstractionError("Invalid input. Only numbers are allowed")
+        
         return a - b
 
     @staticmethod
@@ -61,6 +71,9 @@ class Calculator:
         Returns:
             float: multiplication of a and b params
         """
+        if isinstance(a, str) or isinstance(b, str):
+            raise MultiplicationError("Invalid input. Only numbers are allowed")
+        
         return a * b
 
     @staticmethod
@@ -75,6 +88,9 @@ class Calculator:
         Returns:
             float: division result of a / b where b is non-zero
         """
+        if isinstance(a, str) or isinstance(b, str):
+            raise DivisionError("Invalid input. Only numbers are allowed")
+        
         try:
             return a / b
         except ZeroDivisionError as error:
