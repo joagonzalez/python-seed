@@ -1,7 +1,6 @@
 """
 This module expose endpoints with main app features
 """
-
 from typing import Dict
 
 from fastapi import APIRouter, status
