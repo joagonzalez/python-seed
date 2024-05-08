@@ -1,3 +1,8 @@
+"""
+Custom Exceptions to hanlde app specific behavior on errors.
+"""
+
+
 class CalculatorException(Exception):
     """
     Calculator base exception. Handled at the outermost level.
@@ -16,22 +21,26 @@ class ConfigurationError(OperationalException):
     """
     Configuration error. Usually caused by invalid configuration.
     """
-    
+
+
 class AdditionError(CalculatorException):
     """
     Addition error. Usually caused by invalid configuration.
     """
-    
+
+
 class SubstractionError(CalculatorException):
     """
     Substraction error. Usually caused by invalid configuration.
     """
-    
+
+
 class MultiplicationError(CalculatorException):
     """
     Multiplication error. Usually caused by invalid configuration.
     """
-    
+
+
 class DivisionError(CalculatorException):
     """
     Division error. Usually caused by invalid configuration.
