@@ -17,7 +17,7 @@ test:
 	pytest tests/ -v --cov --cov-report=xml:coverage.xml
 
 pep8:
-	flake8 src/ tests/
+	flake8 src/ tests/ --config pyproject.toml
 
 lint:
 	pylint src/ tests/
