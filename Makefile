@@ -23,7 +23,7 @@ lint:
 	pylint src/ tests/
 
 black:
-	black src/ tests/
+	black src/ tests/ --config pyproject.toml
 
 isort:
 	isort src/ tests/ -v

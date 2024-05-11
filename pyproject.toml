@@ -1,10 +1,94 @@
+[project]
+name = "python-seed"
+dynamic = ["version"]
+description = "python-seed project template"
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+    { name = "Joaquin Gonzalez", email = "joagonzalez@gmail.com" }]
+
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    ]
+
+[project.urls]
+Homepage = "https://github.com/joagonzalez/python-seed"
+Documentation = "https://python-seed.readthedocs.io/en/latest/"
+Repository = "https://github.com/joagonzalez/python-seed"
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+warn_redundant_casts = true
+no_implicit_optional = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
 [tool.black]
 line-length = 79
-target-version = ["py38", "py39", "py310", "py311"]
+target-version = ["py310", "py311", "py312"]
 
 [tool.isort]
 profile = "black"
+line_length = 79
 multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
 
 [tool.flake8]
-ignore = "E126"
+max-doc-length = 80
+max-line-length = 95
+exclude = ".git,__pycache__,docs/source/conf.py,build,dist"
+ignore = "E126,I101,D100,D101,D102,D103,D104,D105,D107,D401,E203,I900,N802,N806,N812,W503,S311,S605,S607,ISC003,ISC001,T101,T000,F541,PL123,E211,E999,F401,F821"
+per-file-ignores = [
+    "__init__.py: F401,F403"
+    ]
+
+[tool.pytest.ini_options]
+addopts = [
+  # "--strict-config",
+  # "--ignore=docs_src",
+  "--strict-markers",
+  ]
+
+filterwarnings = [
+    'ignore::DeprecationWarning',
+    ]
+
+[tool.coverage.run]
+parallel = true
+source = [
+    "src",
+    "tests",
+    ]
+
+# omit files from coverage
+omit = [
+    # "docs_src/response_model/tutorial003_04.py",
+    # "docs_src/response_model/tutorial003_04_py310.py",
+    ]
