@@ -19,18 +19,14 @@ dotenv_path_secrets = os.getenv(
 )
 
 load_dotenv(dotenv_path, override=True)  # priorizes env vars (not .env file)
-load_dotenv(
-    dotenv_path_secrets, override=True
-)  # priorizes env vars (not .env file)
+load_dotenv(dotenv_path_secrets, override=True)  # priorizes env vars (not .env file)
 
 config: Dict[str, Any] = {
     "SERVER": {
         "HOSTNAME": os.getenv("SERVER_HOSTNAME", "0.0.0.0"),
         "PORT": int(os.getenv("SERVER_PORT", "5000")),
-        "DEBUG": os.getenv("SERVER_DEBUG", "True").lower()
-        in ("true", "1", "t"),
-        "RELOAD": os.getenv("SERVER_RELOAD", "False").lower()
-        in ("true", "1", "t"),
+        "DEBUG": os.getenv("SERVER_DEBUG", "True").lower() in ("true", "1", "t"),
+        "RELOAD": os.getenv("SERVER_RELOAD", "False").lower() in ("true", "1", "t"),
         "RELOAD_DIRS": [
             os.getenv("SERVER_RELOAD_DIRS", "src"),
         ],
@@ -64,9 +60,7 @@ config: Dict[str, Any] = {
             "PREFIX": os.getenv("SQLALCHEMY_DATABASE_PREFIX", "DB."),
             "CONFIG": {
                 "DB.URL": os.getenv("SQLALCHEMY_DATABASE_URL", None),
-                "DB.ECHO": os.getenv(
-                    "SQLALCHEMY_DATABASE_ECHO", "True"
-                ).lower()
+                "DB.ECHO": os.getenv("SQLALCHEMY_DATABASE_ECHO", "True").lower()
                 in ("true", "1", "t"),
             },
         },
