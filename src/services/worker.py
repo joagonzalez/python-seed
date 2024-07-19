@@ -27,7 +27,9 @@ class Executor:
 
     def __init__(self, num_workers: int = 4) -> None:
         self.tasks_queue: Queue = Queue()
-        self.workers = [Process(target=self.worker) for _ in range(num_workers)]
+        self.workers = [
+            Process(target=self.worker) for _ in range(num_workers)
+        ]  # noqa: E501
         for worker in self.workers:
             worker.start()
 
