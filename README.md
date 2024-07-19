@@ -42,8 +42,11 @@ Events:
 <img src="docs/pipelines/branch_strategy_python.png" />
 
 ## Documentation
-Mkdocs with docstring plugin was used to build dynamic documentation.
-Static documentation is generated at *docs/* folder and is deployed as a different service within the stack.
+Mkdocs with [readthedocs](https://readthedocs.org/) service is being used to automatically publish service documentation. This approach was prefered over local Mkdocs service due serverless simplicity.
+
+Static documentation is generated at *docs/* folder and is deployed when a release candidate branch is merged with master.
+
+Docs URL is published in badge in this README.
 
 ## CICD Pipeline
 The pipeline uses a custom docker agent with all the neccessary  requirements. It also uses conditionals to fork workflow executions depending on branch naming, in this way we can achieve our goal using only one pipeline. Callback on success and on failure are used in order to send messages to a specific telegram bot.
