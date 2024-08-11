@@ -15,7 +15,7 @@ services:
       - LETSENCRYPT_HOST=calculator.qwerty.com.ar
       - LETSENCRYPT_EMAIL=joagonzalez@gmail.com
       - VIRTUAL_PORT=5000
-      - API_VERSION=v${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}
+      - API_VERSION=${API_VERSION}
 
 networks:
   dmz_ssl:
