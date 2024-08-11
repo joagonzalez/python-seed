@@ -7,7 +7,7 @@ pipeline {
             // Repository
             REPOSITORY = 'joagonzalez/python-seed'
 
-            // Telegram configre
+            // Telegram configure
             TOKEN = credentials('telegramToken')
             CHAT_ID = credentials('telegramChatid')
             GITHUB_TOKEN = credentials('github-token')
@@ -20,6 +20,8 @@ pipeline {
             GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}"
             TEXT_BREAK = "--------------------------------------------------------------"
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
+
+            API_VERSION = "v${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
             // Docker registry config
             REGISTRY = 'joagonzalez'
