@@ -20,8 +20,9 @@ pipeline {
             GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}"
             TEXT_BREAK = "--------------------------------------------------------------"
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
-            LAST_MSG = sh(returnStdout: true, script: "git log --format='%s' --max-count=1 origin/master").trim()
-            VERSION = sh(returnStdout: true, script: "echo ${LAST_MSG} | grep --only-matching v[0-9].[0-9].[0-9]").trim() 
+
+            BRANCH_NAME = "${env.GIT_BRANCH}"
+            VERSION = BRANCH_NAME.split('-')[1] 
 
             API_VERSION = "v${VERSION}${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
@@ -113,6 +114,7 @@ pipeline {
             }
             steps {
                 echo 'Deploy only on release candidate branches..'
+                echo "Deploying version: $API_VERSION and $VERSION to production"
                 sh 'make deploy'
             }
         }
