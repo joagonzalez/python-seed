@@ -8,8 +8,8 @@ services:
     image: ${REGISTRY_IMAGE_API}:${GIT_COMMIT_SHORT}-jenkins-${CURRENT_BUILD_NUMBER}
     networks:
       - dmz_ssl
-    ports:
-      - "5001:5000"
+    # ports:
+    #   - "5001:5000"
     environment:
       - VIRTUAL_HOST=calculator.qwerty.com.ar
       - LETSENCRYPT_HOST=calculator.qwerty.com.ar
