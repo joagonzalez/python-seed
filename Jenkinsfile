@@ -24,7 +24,7 @@ pipeline {
             BRANCH_NAME = "${env.GIT_BRANCH}"
             VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
 
-            API_VERSION = "v${VERSION}${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
+            API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
             // Docker registry config
             REGISTRY = 'joagonzalez'
@@ -91,7 +91,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh 'docker build -t $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
+                sh 'docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API .'
             }
         }
         stage('Push') {
@@ -103,7 +103,7 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh 'docker push $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh 'docker push $REGISTRY_IMAGE_API:$API_VERSION'
             }
         }
         stage('Deploy') {
