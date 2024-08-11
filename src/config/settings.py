@@ -44,7 +44,7 @@ config: Dict[str, Any] = {
             "API_DESCRIPTION",
             "REST interface that expose interactions with network elements",
         ),
-        "VERSION": os.getenv("API_VERSION", ""),
+        "VERSION": os.getenv("API_VERSION"),
         "USERNAME": os.getenv("API_USERNAME", ""),
         "PASSWORD": os.getenv("API_PASSWORD", ""),
     },
