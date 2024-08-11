@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: ./build/calculator/Dockerfile
-    image: ${REGISTRY_IMAGE_API}:${GIT_COMMIT_SHORT}-jenkins-${CURRENT_BUILD_NUMBER}
+    image: ${REGISTRY_IMAGE_API}:${API_VERSION}
     networks:
       - dmz_ssl
     # ports:
