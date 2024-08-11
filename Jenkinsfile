@@ -22,7 +22,7 @@ pipeline {
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
 
             BRANCH_NAME = "${env.GIT_BRANCH}"
-            VERSION = sh(returnStdout: true, script: "${BRANCH_NAME}").split('-')[1].trim() 
+            VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
 
             API_VERSION = "v${VERSION}${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
