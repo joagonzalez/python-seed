@@ -1,8 +1,8 @@
 run:
 	python run.py
 
-build:
-	docker build -t joagonzalez/calculator:0.0.1 .
+build-local:
+	docker build -t joagonzalez/calculator:0.0.4-jenkins-666 -f build/calculator/Dockerfile .
 
 install:
 	pip install -r requirements.txt
@@ -38,9 +38,11 @@ build-jenkins-builder:
 	docker build -t joagonzalez/jenkins_builder:python-3.11.4 build/jenkins_builder/ && docker push joagonzalez/jenkins_builder:python-3.11.4
 
 deploy-local:
-	export GIT_COMMIT_SHORT=0.0.1 && \
+	export GIT_COMMIT_SHORT=0.0.4 && \
 	export CURRENT_BUILD_NUMBER=666 && \
 	export REGISTRY_IMAGE=joagonzalez/python-seed-doc && \
+	export API_VERSION=0.0.4 && \
+	export REGISTRY_IMAGE_API=joagonzalez/calculator && \
 	docker stack deploy -c docker-compose.yml calculator
 
 deploy:

@@ -18,19 +18,19 @@ dotenv_path_secrets = os.getenv(
     os.path.join(os.path.dirname(__file__), ".env.secrets"),
 )
 
-load_dotenv(dotenv_path, override=True)  # priorizes env vars (not .env file)
-load_dotenv(
-    dotenv_path_secrets, override=True
-)  # priorizes env vars (not .env file)
+# priorizes env vars (not .env file)
+load_dotenv(dotenv_path, override=True)
+# priorizes env vars (not .env file)
+load_dotenv(dotenv_path_secrets, override=True)
 
 config: Dict[str, Any] = {
     "SERVER": {
         "HOSTNAME": os.getenv("SERVER_HOSTNAME", "0.0.0.0"),
         "PORT": int(os.getenv("SERVER_PORT", "5000")),
         "DEBUG": os.getenv("SERVER_DEBUG", "True").lower()
-        in ("true", "1", "t"),
+        in ("true", "1", "t"),  # noqa: E501
         "RELOAD": os.getenv("SERVER_RELOAD", "False").lower()
-        in ("true", "1", "t"),
+        in ("true", "1", "t"),  # noqa: E501
         "RELOAD_DIRS": [
             os.getenv("SERVER_RELOAD_DIRS", "src"),
         ],
@@ -44,7 +44,7 @@ config: Dict[str, Any] = {
             "API_DESCRIPTION",
             "REST interface that expose interactions with network elements",
         ),
-        "VERSION": os.getenv("API_VERSION", ""),
+        "VERSION": os.getenv("API_VERSION"),
         "USERNAME": os.getenv("API_USERNAME", ""),
         "PASSWORD": os.getenv("API_PASSWORD", ""),
     },
@@ -66,7 +66,7 @@ config: Dict[str, Any] = {
                 "DB.URL": os.getenv("SQLALCHEMY_DATABASE_URL", None),
                 "DB.ECHO": os.getenv(
                     "SQLALCHEMY_DATABASE_ECHO", "True"
-                ).lower()
+                ).lower()  # noqa: E501
                 in ("true", "1", "t"),
             },
         },

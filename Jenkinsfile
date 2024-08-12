@@ -7,7 +7,7 @@ pipeline {
             // Repository
             REPOSITORY = 'joagonzalez/python-seed'
 
-            // Telegram configre
+            // Telegram configure
             TOKEN = credentials('telegramToken')
             CHAT_ID = credentials('telegramChatid')
             GITHUB_TOKEN = credentials('github-token')
@@ -20,6 +20,11 @@ pipeline {
             GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}"
             TEXT_BREAK = "--------------------------------------------------------------"
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
+
+            BRANCH_NAME = "${env.GIT_BRANCH}"
+            VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
+
+            API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
             // Docker registry config
             REGISTRY = 'joagonzalez'
@@ -86,7 +91,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh 'docker build -t $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
+                sh 'docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API .'
             }
         }
         stage('Push') {
@@ -98,7 +103,7 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh 'docker push $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh 'docker push $REGISTRY_IMAGE_API:$API_VERSION'
             }
         }
         stage('Deploy') {
@@ -109,6 +114,7 @@ pipeline {
             }
             steps {
                 echo 'Deploy only on release candidate branches..'
+                echo "Deploying version: $API_VERSION and $VERSION to production"
                 sh 'make deploy'
             }
         }
@@ -133,6 +139,17 @@ pipeline {
                     
                     if [[ $LAST_LOG == $LAST_MERGE && -n $VERSION ]]
                     then
+                        # Check if the release already exists
+                        RELEASE_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+                        "https://api.github.com/repos/$REPOSITORY/releases/tags/$VERSION" | jq -r .id)
+            
+                        if [[ $RELEASE_ID != "null" ]]
+                        then
+                            echo "Release with tag $VERSION already exists. Deleting it..."
+                            curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
+                                "https://api.github.com/repos/$REPOSITORY/releases/$RELEASE_ID"
+                        fi
+
                         DATA='{
                             "tag_name": "'$VERSION'",
                             "target_commitish": "master",
