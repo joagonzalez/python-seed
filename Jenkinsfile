@@ -23,7 +23,6 @@ pipeline {
 
             BRANCH_NAME = "${env.GIT_BRANCH}"
             VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
-
             API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
             // Docker registry config
