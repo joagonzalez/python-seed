@@ -19,10 +19,9 @@ pipeline {
             GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
 
             BRANCH_NAME = "${env.GIT_BRANCH}"
-            VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
-            API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
-
-            GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
+            VERSION = 'default'
+            API_VERSION = "placeholder"
+            GIT_INFO = "placeholder"
             TEXT_BREAK = "--------------------------------------------------------------"
             TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
             
@@ -46,6 +45,17 @@ pipeline {
                 steps {
                     sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
                     script {
+                        def branchName = "${BRANCH_NAME}"
+                        if (branchName.contains('-')) {
+                            VERSION = sh(returnStdout: true, script: "echo ${branchName}").split('-')[1].trim()
+                        } else {
+                            // Handle the case where there is no '-' in BRANCH_NAME
+                            echo "Branch name does not contain '-', setting VERSION to default value"
+                            VERSION = "default"
+                        }
+                        API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
+                        GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
+                        echo "VERSION: ${VERSION}"
                         sh 'apt update && apt install make'
                     }
                 }
