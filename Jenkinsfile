@@ -79,7 +79,7 @@ pipeline {
             }
             steps {
                 echo 'Publish coverage and tests to coveralls..'
-                sh 'COVERALLS_REPO_TOKEN=$COVERALL_TOKEN coveralls'
+                sh "COVERALLS_REPO_TOKEN=${COVERALL_TOKEN} coveralls"
                 sh 'make clean'
             }
         }
