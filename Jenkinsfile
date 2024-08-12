@@ -102,7 +102,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh 'docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API .'
+                sh "docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API ."
             }
         }
         stage('Push') {
@@ -114,7 +114,7 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh 'docker push $REGISTRY_IMAGE_API:$API_VERSION'
+                sh "docker push $REGISTRY_IMAGE_API:$API_VERSION"
             }
         }
         stage('Deploy') {
@@ -161,7 +161,7 @@ pipeline {
                             curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
                                 "https://api.github.com/repos/$REPOSITORY/releases/$RELEASE_ID"
                         fi
-                        
+
                         DATA='{
                             "tag_name": "'$VERSION'",
                             "target_commitish": "master",
