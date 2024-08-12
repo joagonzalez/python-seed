@@ -53,7 +53,6 @@ pipeline {
                             VERSION = "default"
                         }
                         API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
-                        env.API_VERSION = "${API_VERSION}"
                         GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
                         TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
                         echo "VERSION: ${VERSION}"
