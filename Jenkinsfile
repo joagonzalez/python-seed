@@ -58,7 +58,7 @@ pipeline {
                         echo "VERSION: ${VERSION}"
                     }
                     sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
-                    sh 'apt update && apt install make'
+                    sh 'apt update && apt install make && apt install -y jq'
                 }
             }
         stage('Installing App packages') {
