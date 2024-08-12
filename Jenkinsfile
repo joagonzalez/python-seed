@@ -17,14 +17,15 @@ pipeline {
             GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --format=%s ${GIT_COMMIT}").trim()
             GIT_AUTHOR = sh(returnStdout: true, script: "git log -n 1 --format=%ae ${GIT_COMMIT}").trim()
             GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-            GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}"
-            TEXT_BREAK = "--------------------------------------------------------------"
-            TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
 
             BRANCH_NAME = "${env.GIT_BRANCH}"
             VERSION = sh(returnStdout: true, script: "echo ${BRANCH_NAME}").split('-')[1].trim() 
             API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
 
+            GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
+            TEXT_BREAK = "--------------------------------------------------------------"
+            TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
+            
             // Docker registry config
             REGISTRY = 'joagonzalez'
             REGISTRY_IMAGE_API = "$REGISTRY/python-seed-api"
@@ -138,6 +139,17 @@ pipeline {
                     
                     if [[ $LAST_LOG == $LAST_MERGE && -n $VERSION ]]
                     then
+                        # Check if the release already exists
+                        RELEASE_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+                        "https://api.github.com/repos/$REPOSITORY/releases/tags/$VERSION" | jq -r .id)
+            
+                        if [[ $RELEASE_ID != "null" ]]
+                        then
+                            echo "Release with tag $VERSION already exists. Deleting it..."
+                            curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
+                                "https://api.github.com/repos/$REPOSITORY/releases/$RELEASE_ID"
+                        fi
+
                         DATA='{
                             "tag_name": "'$VERSION'",
                             "target_commitish": "master",
