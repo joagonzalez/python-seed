@@ -150,6 +150,18 @@ pipeline {
                     
                     if [[ $LAST_LOG == $LAST_MERGE && -n $VERSION ]]
                     then
+
+                        # Check if the release already exists
+                        RELEASE_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+                            "https://api.github.com/repos/$REPOSITORY/releases/tags/$VERSION" | jq -r .id)
+                        
+                        if [[ $RELEASE_ID != "null" ]]
+                        then
+                            echo "Release with tag $VERSION already exists. Deleting it..."
+                            curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
+                                "https://api.github.com/repos/$REPOSITORY/releases/$RELEASE_ID"
+                        fi
+                        
                         DATA='{
                             "tag_name": "'$VERSION'",
                             "target_commitish": "master",
