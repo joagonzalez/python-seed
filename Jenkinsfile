@@ -46,15 +46,15 @@ pipeline {
                     script {
                         def branchName = "${BRANCH_NAME}"
                         if (branchName.contains('-')) {
-                            VERSION = sh(returnStdout: true, script: "echo ${branchName}").split('-')[1].trim()
+                            env.VERSION = sh(returnStdout: true, script: "echo ${branchName}").split('-')[1].trim()
                         } else {
                             // Handle the case where there is no '-' in BRANCH_NAME
                             echo "Branch name does not contain '-', setting VERSION to default value"
-                            VERSION = "default"
+                            env.VERSION = "default"
                         }
-                        API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
-                        GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
-                        TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
+                        env.API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
+                        env.GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
+                        env.TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
                         echo "VERSION: ${VERSION}"
                     }
                     sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
@@ -102,7 +102,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh "docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API ."
+                sh 'docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API .'
             }
         }
         stage('Push') {
@@ -114,7 +114,7 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh "docker push $REGISTRY_IMAGE_API:$API_VERSION"
+                sh 'docker push $REGISTRY_IMAGE_API:$API_VERSION'
             }
         }
         stage('Deploy') {
