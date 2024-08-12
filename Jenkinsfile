@@ -127,6 +127,7 @@ pipeline {
             steps {
                 echo 'Deploy only on release candidate branches..'
                 echo "Deploying version: $API_VERSION and $VERSION to production"
+                echo "ENV VAR FOR API VERSION: ${env.API_VERSION}"
                 sh 'make deploy'
             }
         }
