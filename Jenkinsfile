@@ -7,7 +7,7 @@ pipeline {
             // Repository
             REPOSITORY = 'joagonzalez/python-seed'
 
-            // Telegram configre
+            // Telegram configure
             TOKEN = credentials('telegramToken')
             CHAT_ID = credentials('telegramChatid')
             GITHUB_TOKEN = credentials('github-token')
@@ -17,10 +17,14 @@ pipeline {
             GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --format=%s ${GIT_COMMIT}").trim()
             GIT_AUTHOR = sh(returnStdout: true, script: "git log -n 1 --format=%ae ${GIT_COMMIT}").trim()
             GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-            GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}"
-            TEXT_BREAK = "--------------------------------------------------------------"
-            TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
 
+            BRANCH_NAME = "${env.GIT_BRANCH}"
+            VERSION = 'default'
+            API_VERSION = "placeholder"
+            GIT_INFO = "placeholder"
+            TEXT_BREAK = "--------------------------------------------------------------"
+            TEXT_PRE_BUILD = "placeholder"
+            
             // Docker registry config
             REGISTRY = 'joagonzalez'
             REGISTRY_IMAGE_API = "$REGISTRY/python-seed-api"
@@ -39,10 +43,22 @@ pipeline {
     stages {
         stage('Prepare image pre reqs') {
                 steps {
-                    sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
                     script {
-                        sh 'apt update && apt install make'
+                        def branchName = "${BRANCH_NAME}"
+                        if (branchName.contains('-')) {
+                            VERSION = sh(returnStdout: true, script: "echo ${branchName}").split('-')[1].trim()
+                        } else {
+                            // Handle the case where there is no '-' in BRANCH_NAME
+                            echo "Branch name does not contain '-', setting VERSION to default value"
+                            VERSION = "default"
+                        }
+                        API_VERSION = "${VERSION}-${GIT_COMMIT_SHORT}-${CURRENT_BUILD_NUMBER}"
+                        GIT_INFO = "Branch(Version): ${GIT_BRANCH}\nLast Message: ${GIT_MESSAGE}\nAuthor: ${GIT_AUTHOR}\nCommit: ${GIT_COMMIT_SHORT}\nApp Version: ${API_VERSION}"
+                        TEXT_PRE_BUILD = "${TEXT_BREAK}\n${GIT_INFO}\n${JOB_NAME} is Building"
+                        echo "VERSION: ${VERSION}"
                     }
+                    sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
+                    sh 'apt update && apt install make && apt install -y jq'
                 }
             }
         stage('Installing App packages') {
@@ -74,7 +90,7 @@ pipeline {
             }
             steps {
                 echo 'Publish coverage and tests to coveralls..'
-                sh 'COVERALLS_REPO_TOKEN=$COVERALL_TOKEN coveralls'
+                sh "COVERALLS_REPO_TOKEN=${COVERALL_TOKEN} coveralls"
                 sh 'make clean'
             }
         }
@@ -86,7 +102,7 @@ pipeline {
             }
             steps {
                 echo 'Build only on release candidate branches..'
-                sh 'docker build -t $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH_API .'
+                sh "docker build -t $REGISTRY_IMAGE_API:$API_VERSION -f $DOCKERFILE_PATH_API ."
             }
         }
         stage('Push') {
@@ -98,7 +114,7 @@ pipeline {
             steps {
                 echo 'Push new image to docker hub registry..'
                 sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                sh 'docker push $REGISTRY_IMAGE_API:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER'
+                sh "docker push $REGISTRY_IMAGE_API:$API_VERSION"
             }
         }
         stage('Deploy') {
@@ -109,7 +125,11 @@ pipeline {
             }
             steps {
                 echo 'Deploy only on release candidate branches..'
-                sh 'make deploy'
+                echo "Deploying version: $API_VERSION and $VERSION to production"
+                sh """
+                    export API_VERSION=$API_VERSION
+                    make deploy
+                """
             }
         }
         stage('Create release at Github') {
@@ -133,6 +153,18 @@ pipeline {
                     
                     if [[ $LAST_LOG == $LAST_MERGE && -n $VERSION ]]
                     then
+
+                        # Check if the release already exists
+                        RELEASE_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+                            "https://api.github.com/repos/$REPOSITORY/releases/tags/$VERSION" | jq -r .id)
+                        
+                        if [[ $RELEASE_ID != "null" ]]
+                        then
+                            echo "Release with tag $VERSION already exists. Deleting it..."
+                            curl -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
+                                "https://api.github.com/repos/$REPOSITORY/releases/$RELEASE_ID"
+                        fi
+
                         DATA='{
                             "tag_name": "'$VERSION'",
                             "target_commitish": "master",
@@ -147,7 +179,6 @@ pipeline {
             }
         }
     }
-
     post {
         success {
             script{
